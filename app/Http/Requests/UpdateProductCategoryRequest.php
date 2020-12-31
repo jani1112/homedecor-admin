@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Requests;
+
+use App\Models\ProductCategory;
+use Gate;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+
+class UpdateProductCategoryRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return Gate::allows('product_category_edit');
+    }
+
+    public function rules()
+    {
+        return [
+            'category_code'   => [
+                'string',
+                'required',
+                'unique:product_categories,category_code,' . request()->route('product_category')->id,
+            ],
+            'category_name'   => [
+                'string',
+                'required',
+            ],
+            'category_status' => [
+                'required',
+            ],
+        ];
+    }
+}
